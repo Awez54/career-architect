@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Interactive Page</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #e0e0e0;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        color: #333;
+    }
+    .container {
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+        padding: 20px;
+        width: 600px;
+        max-width: 90%;
+    }
+    .textarea, .input-field, .output-field {
+        width: calc(100% - 20px); /* Subtract padding */
+        padding: 10px;
+        box-sizing: border-box;
+        margin-bottom: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 16px;
+    }
+    .textarea {
+        height: 150px;
+        resize: vertical;
+    }
+    .output-field {
+        height: 150px;
+        resize: none;
+        background-color: #f9f9f9;
+        color: #666;
+    }
+    .btn-container {
+        display: flex;
+        justify-content: space-between;
+    }
+    .btn {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+    .btn-primary {
+        background-color: #4CAF50;
+        color: white;
+    }
+    .btn-secondary {
+        background-color: #f44336;
+        color: white;
+    }
+    .btn-primary:hover, .btn-secondary:hover {
+        opacity: 0.8;
+    }
+    .form-container {
+        margin-bottom: 20px;
+    }
+</style>
+</head>
+<body>
+<div class="container">
+    <div class="form-container">
+        <form id="contentForm" method="post" action="/get_resume">
+            <input type="text" class="input-field" name="skills" id="skills" placeholder="Skills" required>
+            <input type="text" class="input-field" name="qualifications" id="qualifications" placeholder="Qualifications" required>
+            <input type="text" class="input-field" name="contactDetails" id="contactDetails" placeholder="Contact Details" required>
+            <textarea class="textarea" name="Experience" id="experience" placeholder="Experience" required></textarea>
+            <div class="btn-container">
+                <button type="button" class="btn btn-primary" onclick="displayContent()">Save</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="form-container">
+        <form id="pdfForm" method="post" action="/download_pdf" target="_blank">
+            <textarea class="output-field" name="output" id="displayDetails" placeholder="Output will be displayed here" readonly>
+                <% if (locals.output) { %>
+                <%= output %>
+                <% } %>
+            </textarea>
+            <div class="btn-container">
+                <button type="submit" class="btn btn-secondary">Download as PDF</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    function displayContent() {
+        const skills = document.getElementById('skills').value;
+        const qualifications = document.getElementById('qualifications').value;
+        const contactDetails = document.getElementById('contactDetails').value;
+        const experience = document.getElementById('experience').value;
+
+        const output = `Skills: ${skills}\n\nQualifications: ${qualifications}\n\nContact Details: ${contactDetails}\n\nExperience: ${experience}`;
+        document.getElementById('displayDetails').textContent = output;
+    }
+</script>
+</body>
+</html>
